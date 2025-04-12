@@ -21,10 +21,10 @@ liballegro5_deps = [
   liballegro5_proj.dependency('allegro_dialog'),
   liballegro5_proj.dependency('allegro_video'),
   liballegro5_proj.dependency('allegro_main'),
-  dependency('xi'),
-  dependency('alsa'),
-  dependency('libpulse-simple'),
-  dependency('gtk+-3.0'),
+  dependency('xi', static: true),
+  dependency('alsa', static: true),
+  dependency('libpulse-simple', static: true),
+  dependency('gtk+-3.0', static: true),
 ]
 
 subdir('src')
