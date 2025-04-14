@@ -14,6 +14,12 @@ int main(int argc, char **argv) {
         goto cleanup;
     }
 
+    // setup stuff
+    if (!game_setup()) {
+        printf("game_setup() failed\n");
+        goto cleanup;
+    }
+
     // create a mutex object
     g_mutex = al_create_mutex();
     if (g_mutex == NULL) {
