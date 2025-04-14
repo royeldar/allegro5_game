@@ -18,6 +18,10 @@ static void render_loop(ALLEGRO_THREAD *thread) {
     }
 }
 
+static void render_cleanup() {
+    // TODO
+}
+
 void *render_main(ALLEGRO_THREAD *thread, void *arg) {
     bool ret;
 
@@ -26,10 +30,13 @@ void *render_main(ALLEGRO_THREAD *thread, void *arg) {
 
     // exit on failure
     if (!ret)
-        return NULL;
+        goto cleanup;
 
     // render loop
     render_loop(thread);
 
+cleanup:
+    // cleanup stuff
+    render_cleanup();
     return NULL;
 }
