@@ -33,7 +33,7 @@ void *render_main(ALLEGRO_THREAD *thread, void *arg) {
     ret = render_setup();
 
     // signal the main thread
-    signal_main_thread();
+    signal_main_thread(ret);
 
     // exit on failure
     if (!ret)

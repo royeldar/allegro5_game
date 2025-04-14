@@ -5,6 +5,6 @@
 extern ALLEGRO_MUTEX *g_mutex;
 extern ALLEGRO_COND *g_cond;
 
-void signal_new_thread_and_wait();
+bool signal_new_thread_and_wait();
 void wait_for_main_thread();
-void signal_main_thread();
+void signal_main_thread(bool status);

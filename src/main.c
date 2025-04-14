@@ -39,7 +39,10 @@ int main(int argc, char **argv) {
     al_start_thread(thread);
 
     // signal the new thread and wait for it to signal us
-    signal_new_thread_and_wait();
+    if (!signal_new_thread_and_wait()) {
+        printf("render_setup() failed\n");
+        goto cleanup;
+    }
 
     // do main game loop
     game_loop();
