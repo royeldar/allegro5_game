@@ -8,6 +8,11 @@ int main(int argc, char **argv) {
         goto cleanup;
     }
 
+    // main game loop
+    while (true) {
+        // TODO
+    }
+
 cleanup:
     return 0;
 }
