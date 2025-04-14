@@ -1,3 +1,4 @@
 sources = files(
-  'main.c'
+  'main.c',
+  'render.c',
 )
