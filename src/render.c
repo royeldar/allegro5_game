@@ -6,6 +6,7 @@
 #include <stdbool.h>
 
 #include "render.h"
+#include "synchronization.h"
 
 static bool render_setup() {
     // TODO
@@ -25,8 +26,14 @@ static void render_cleanup() {
 void *render_main(ALLEGRO_THREAD *thread, void *arg) {
     bool ret;
 
+    // wait for main thread to signal us
+    wait_for_main_thread();
+
     // setup stuff
     ret = render_setup();
+
+    // signal the main thread
+    signal_main_thread();
 
     // exit on failure
     if (!ret)
