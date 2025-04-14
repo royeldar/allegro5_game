@@ -28,6 +28,7 @@ int main(int argc, char **argv) {
 
 cleanup:
     if (thread != NULL)
+        // al_destroy_thread also calls al_join_thread
         al_destroy_thread(thread);
     return 0;
 }
