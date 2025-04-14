@@ -1,6 +1,7 @@
 #include <allegro5/allegro.h>
 #include <stdio.h>
 
+#include "game.h"
 #include "render.h"
 
 int main(int argc, char **argv) {
@@ -22,10 +23,8 @@ int main(int argc, char **argv) {
     // start the new thread
     al_start_thread(thread);
 
-    // main game loop
-    while (true) {
-        // TODO
-    }
+    // do main game loop
+    game_loop();
 
 cleanup:
     if (thread != NULL)
