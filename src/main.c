@@ -56,6 +56,9 @@ int main(int argc, char **argv) {
     // do main game loop
     game_loop();
 
+    // unregister display event source
+    al_unregister_event_source(g_event_queue, al_get_display_event_source(g_display));
+
 cleanup:
     if (thread != NULL)
         // al_destroy_thread also calls al_join_thread
