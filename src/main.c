@@ -44,8 +44,8 @@ int main(int argc, char **argv) {
     // start the new thread
     al_start_thread(thread);
 
-    // signal the new thread and wait for it to signal us
-    if (!signal_new_thread_and_wait()) {
+    // signal the new thread and wait for it to acknowledge
+    if (!send_event_and_wait(1)) {
         printf("render_setup() failed\n");
         goto cleanup;
     }

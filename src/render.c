@@ -14,14 +14,14 @@
 
 ALLEGRO_DISPLAY *g_display = NULL;
 
-static bool render_setup() {
+static int render_setup() {
     // create a 640x480 display
     g_display = al_create_display(WIDTH, HEIGHT);
     if (g_display == NULL) {
         printf("al_create_display() failed\n");
-        return false;
+        return 0;
     }
-    return true;
+    return 1;
 }
 
 static void render_loop(ALLEGRO_THREAD *thread) {
@@ -35,16 +35,17 @@ static void render_cleanup() {
 }
 
 void *render_main(ALLEGRO_THREAD *thread, void *arg) {
-    bool ret;
+    int ret;
 
-    // wait for main thread to signal us
-    wait_for_main_thread();
+    // wait for the main thread to signal us
+    while (!check_event())
+        al_rest(0.01);
 
     // setup stuff
     ret = render_setup();
 
     // signal the main thread
-    signal_main_thread(ret);
+    acknowledge_event(ret);
 
     // exit on failure
     if (!ret)

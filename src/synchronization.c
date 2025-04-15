@@ -7,19 +7,21 @@
 ALLEGRO_MUTEX *g_mutex = NULL;
 ALLEGRO_COND *g_cond = NULL;
 
-static atomic_bool start = false;
-static bool finish = false;
-static bool _status;
+static atomic_int _event = 0;
+static bool finish;
+static int _status;
 
 /**
- * @brief Signal new thread to start setup and wait until it finishes setup
+ * @brief Send an event to a thread and wait for acknowledgement
  *
- * @return setup status
+ * @param event any non-zero value
+ * @return status (see below)
  */
-bool signal_new_thread_and_wait() {
-    bool status;
+int send_event_and_wait(int event) {
+    int status;
     al_lock_mutex(g_mutex);
-    atomic_store_explicit(&start, true, memory_order_relaxed);
+    finish = false;
+    atomic_store_explicit(&_event, event, memory_order_relaxed);
     while (!finish)
         al_wait_cond(g_cond, g_mutex);
     status = _status;
@@ -28,19 +30,21 @@ bool signal_new_thread_and_wait() {
 }
 
 /**
- * @brief Wait for main thread (should be called before setup)
+ * @brief Check whether an event was sent
+ *
+ * @return event (a non-zero value means an event was sent)
  */
-void wait_for_main_thread() {
-    while (!atomic_load_explicit(&start, memory_order_relaxed))
-        al_rest(0.01);
+int check_event() {
+    return atomic_load_explicit(&_event, memory_order_relaxed);
 }
 
 /**
- * @brief Signal main thread (should be called after setup)
+ * @brief Acknowledge an event
  *
- * @param status setup status
+ * @param status some value
  */
-void signal_main_thread(bool status) {
+void acknowledge_event(int status) {
+    _event = 0;
     al_lock_mutex(g_mutex);
     finish = true;
     _status = status;
