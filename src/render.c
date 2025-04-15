@@ -19,9 +19,9 @@ static int render_setup() {
     g_display = al_create_display(WIDTH, HEIGHT);
     if (g_display == NULL) {
         printf("al_create_display() failed\n");
-        return 0;
+        return STATUS_FAILURE;
     }
-    return 1;
+    return STATUS_SUCCESS;
 }
 
 static void render_loop(ALLEGRO_THREAD *thread) {
@@ -48,7 +48,7 @@ void *render_main(ALLEGRO_THREAD *thread, void *arg) {
     acknowledge_event(ret);
 
     // exit on failure
-    if (!ret)
+    if (ret != STATUS_SUCCESS)
         goto cleanup;
 
     // render loop
