@@ -11,11 +11,14 @@
 #include "shared_state.h"
 #include "synchronization.h"
 
+#define FPS 50
+
 static const struct shared_state initial_shared_state = {
     // TODO
 };
 
 ALLEGRO_EVENT_QUEUE *g_event_queue = NULL;
+ALLEGRO_TIMER *g_timer = NULL;
 
 bool game_setup() {
     initialize_shared_state(&initial_shared_state);
@@ -24,6 +27,13 @@ bool game_setup() {
     g_event_queue = al_create_event_queue();
     if (g_event_queue == NULL) {
         printf("al_create_event_queue() failed\n");
+        return false;
+    }
+
+    // create a stopped timer
+    g_timer = al_create_timer(1.0 / FPS);
+    if (g_timer == NULL) {
+        printf("al_create_timer() failed\n");
         return false;
     }
 
@@ -52,6 +62,9 @@ void game_loop() {
             al_acknowledge_drawing_resume(g_display);
             send_event_and_wait(RESUME_DRAWING);
             break;
+        case ALLEGRO_EVENT_TIMER:
+            update = true;
+            break;
         }
         if (update) {
             struct shared_state *shared_state = get_shared_state_for_writing();
@@ -64,4 +77,6 @@ void game_loop() {
 void game_cleanup() {
     if (g_event_queue != NULL)
         al_destroy_event_queue(g_event_queue);
+    if (g_timer != NULL)
+        al_destroy_timer(g_timer);
 }

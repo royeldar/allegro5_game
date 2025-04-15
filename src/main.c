@@ -53,11 +53,17 @@ int main(int argc, char **argv) {
     // register display event source
     al_register_event_source(g_event_queue, al_get_display_event_source(g_display));
 
+    // register timer event source
+    al_register_event_source(g_event_queue, al_get_timer_event_source(g_timer));
+
     // do main game loop
     game_loop();
 
     // unregister display event source
     al_unregister_event_source(g_event_queue, al_get_display_event_source(g_display));
+
+    // unregister timer event source
+    al_unregister_event_source(g_event_queue, al_get_timer_event_source(g_timer));
 
 cleanup:
     if (thread != NULL)
