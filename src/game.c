@@ -33,10 +33,21 @@ void update_frame(struct shared_state *shared_state) {
 }
 
 void game_loop() {
-    while (true) {
-        struct shared_state *shared_state = get_shared_state_for_writing();
-        update_frame(shared_state);
-        write_shared_state();
+    bool exit = false;
+    while (!exit) {
+        bool update = false;
+        ALLEGRO_EVENT event;
+        al_wait_for_event(g_event_queue, &event);
+        switch (event.type) {
+        case ALLEGRO_EVENT_DISPLAY_CLOSE:
+            exit = true;
+            break;
+        }
+        if (update) {
+            struct shared_state *shared_state = get_shared_state_for_writing();
+            update_frame(shared_state);
+            write_shared_state();
+        }
     }
 }
 
