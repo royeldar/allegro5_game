@@ -7,6 +7,7 @@
 #include <stdio.h>
 
 #include "render.h"
+#include "shared_state.h"
 #include "synchronization.h"
 
 #define WIDTH   640
@@ -24,9 +25,16 @@ static int render_setup() {
     return STATUS_SUCCESS;
 }
 
+void render_frame(const struct shared_state *shared_state) {
+    // TODO
+}
+
 static void render_loop(ALLEGRO_THREAD *thread) {
     while (!al_get_thread_should_stop(thread)) {
-        // TODO
+        const struct shared_state *shared_state;
+        read_shared_state();
+        shared_state = get_shared_state_for_reading();
+        render_frame(shared_state);
     }
 }
 
