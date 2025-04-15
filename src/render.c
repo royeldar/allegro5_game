@@ -30,11 +30,25 @@ void render_frame(const struct shared_state *shared_state) {
 }
 
 static void render_loop(ALLEGRO_THREAD *thread) {
+    bool dont_draw = false;
     while (!al_get_thread_should_stop(thread)) {
-        const struct shared_state *shared_state;
-        read_shared_state();
-        shared_state = get_shared_state_for_reading();
-        render_frame(shared_state);
+        int event = check_event();
+        if (event == 0 && !dont_draw) {
+            const struct shared_state *shared_state;
+            read_shared_state();
+            shared_state = get_shared_state_for_reading();
+            render_frame(shared_state);
+        } else {
+            switch (event) {
+            case HALT_DRAWING:
+                dont_draw = true;
+                break;
+            case RESUME_DRAWING:
+                dont_draw = false;
+                break;
+            }
+            acknowledge_event(STATUS_SUCCESS);
+        }
     }
 }
 

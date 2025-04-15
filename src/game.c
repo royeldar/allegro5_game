@@ -7,7 +7,9 @@
 #include <stdio.h>
 
 #include "game.h"
+#include "render.h"
 #include "shared_state.h"
+#include "synchronization.h"
 
 static const struct shared_state initial_shared_state = {
     // TODO
@@ -41,6 +43,14 @@ void game_loop() {
         switch (event.type) {
         case ALLEGRO_EVENT_DISPLAY_CLOSE:
             exit = true;
+            break;
+        case ALLEGRO_EVENT_DISPLAY_HALT_DRAWING:
+            send_event_and_wait(HALT_DRAWING);
+            al_acknowledge_drawing_halt(g_display);
+            break;
+        case ALLEGRO_EVENT_DISPLAY_RESUME_DRAWING:
+            al_acknowledge_drawing_resume(g_display);
+            send_event_and_wait(RESUME_DRAWING);
             break;
         }
         if (update) {
