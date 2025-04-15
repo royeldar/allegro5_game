@@ -64,5 +64,6 @@ cleanup:
         al_destroy_mutex(g_mutex);
     if (g_cond != NULL)
         al_destroy_cond(g_cond);
+    game_cleanup();
     return 0;
 }

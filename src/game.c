@@ -27,3 +27,7 @@ void game_loop() {
         write_shared_state();
     }
 }
+
+void game_cleanup() {
+    // TODO
+}
