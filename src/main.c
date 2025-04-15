@@ -56,8 +56,14 @@ int main(int argc, char **argv) {
     // register timer event source
     al_register_event_source(g_event_queue, al_get_timer_event_source(g_timer));
 
+    // start timer
+    al_start_timer(g_timer);
+
     // do main game loop
     game_loop();
+
+    // stop timer
+    al_stop_timer(g_timer);
 
     // unregister display event source
     al_unregister_event_source(g_event_queue, al_get_display_event_source(g_display));
