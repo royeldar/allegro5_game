@@ -2,7 +2,9 @@
  * Main game loop
  */
 
+#include <allegro5/allegro.h>
 #include <stdbool.h>
+#include <stdio.h>
 
 #include "game.h"
 #include "shared_state.h"
@@ -11,8 +13,18 @@ static const struct shared_state initial_shared_state = {
     // TODO
 };
 
+ALLEGRO_EVENT_QUEUE *g_event_queue = NULL;
+
 bool game_setup() {
     initialize_shared_state(&initial_shared_state);
+
+    // create an empty event queue
+    g_event_queue = al_create_event_queue();
+    if (g_event_queue == NULL) {
+        printf("al_create_event_queue() failed\n");
+        return false;
+    }
+
     return true;
 }
 
@@ -29,5 +41,6 @@ void game_loop() {
 }
 
 void game_cleanup() {
-    // TODO
+    if (g_event_queue != NULL)
+        al_destroy_event_queue(g_event_queue);
 }

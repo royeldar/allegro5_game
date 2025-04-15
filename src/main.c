@@ -50,6 +50,9 @@ int main(int argc, char **argv) {
         goto cleanup;
     }
 
+    // register display event source
+    al_register_event_source(g_event_queue, al_get_display_event_source(g_display));
+
     // do main game loop
     game_loop();
 
