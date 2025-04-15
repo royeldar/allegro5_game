@@ -57,6 +57,9 @@ cleanup:
     if (thread != NULL)
         // al_destroy_thread also calls al_join_thread
         al_destroy_thread(thread);
+    if (g_display != NULL)
+        // al_create_display is called in the rendering thread
+        al_destroy_display(g_display);
     if (g_mutex != NULL)
         al_destroy_mutex(g_mutex);
     if (g_cond != NULL)

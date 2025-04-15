@@ -4,12 +4,23 @@
 
 #include <allegro5/allegro.h>
 #include <stdbool.h>
+#include <stdio.h>
 
 #include "render.h"
 #include "synchronization.h"
 
+#define WIDTH   640
+#define HEIGHT  480
+
+ALLEGRO_DISPLAY *g_display = NULL;
+
 static bool render_setup() {
-    // TODO
+    // create a 640x480 display
+    g_display = al_create_display(WIDTH, HEIGHT);
+    if (g_display == NULL) {
+        printf("al_create_display() failed\n");
+        return false;
+    }
     return true;
 }
 
