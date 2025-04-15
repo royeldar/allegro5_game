@@ -57,10 +57,12 @@ void game_loop() {
         case ALLEGRO_EVENT_DISPLAY_HALT_DRAWING:
             send_event_and_wait(HALT_DRAWING);
             al_acknowledge_drawing_halt(g_display);
+            al_stop_timer(g_timer);
             break;
         case ALLEGRO_EVENT_DISPLAY_RESUME_DRAWING:
             al_acknowledge_drawing_resume(g_display);
             send_event_and_wait(RESUME_DRAWING);
+            al_start_timer(g_timer);
             break;
         case ALLEGRO_EVENT_TIMER:
             update = true;
