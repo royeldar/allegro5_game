@@ -59,14 +59,10 @@ static void render_cleanup() {
 void *render_main(ALLEGRO_THREAD *thread, void *arg) {
     int ret;
 
-    // wait for the main thread to signal us
-    while (!receive_event())
-        al_rest(0.01);
-
     // setup stuff
     ret = render_setup();
 
-    // signal the main thread
+    // tell the main thread that setup has finished
     acknowledge_event(ret);
 
     // exit on failure
