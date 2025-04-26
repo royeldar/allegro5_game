@@ -55,13 +55,15 @@ void game_loop() {
             exit = true;
             break;
         case ALLEGRO_EVENT_DISPLAY_HALT_DRAWING:
-            send_event_and_wait(HALT_DRAWING);
+            send_event(HALT_DRAWING);
+            wait_for_acknowledgement();
             al_acknowledge_drawing_halt(g_display);
             al_stop_timer(g_timer);
             break;
         case ALLEGRO_EVENT_DISPLAY_RESUME_DRAWING:
             al_acknowledge_drawing_resume(g_display);
-            send_event_and_wait(RESUME_DRAWING);
+            send_event(RESUME_DRAWING);
+            wait_for_acknowledgement();
             al_start_timer(g_timer);
             break;
         case ALLEGRO_EVENT_TIMER:

@@ -5,6 +5,7 @@
 extern ALLEGRO_MUTEX *g_mutex;
 extern ALLEGRO_COND *g_cond;
 
-int send_event_and_wait(int event);
-int check_event();
+void send_event(int event);
+int wait_for_acknowledgement();
+int receive_event();
 void acknowledge_event(int status);

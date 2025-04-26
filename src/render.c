@@ -32,7 +32,7 @@ void render_frame(const struct shared_state *shared_state) {
 static void render_loop(ALLEGRO_THREAD *thread) {
     bool dont_draw = false;
     while (!al_get_thread_should_stop(thread)) {
-        int event = check_event();
+        int event = receive_event();
         if (event == 0 && !dont_draw) {
             const struct shared_state *shared_state;
             read_shared_state();
@@ -60,7 +60,7 @@ void *render_main(ALLEGRO_THREAD *thread, void *arg) {
     int ret;
 
     // wait for the main thread to signal us
-    while (!check_event())
+    while (!receive_event())
         al_rest(0.01);
 
     // setup stuff
