@@ -71,6 +71,9 @@ int main(int argc, char **argv) {
     // unregister timer event source
     al_unregister_event_source(g_event_queue, al_get_timer_event_source(g_timer));
 
+    // flush event queue
+    al_flush_event_queue(g_event_queue);
+
 cleanup:
     if (thread != NULL)
         // al_destroy_thread also calls al_join_thread
