@@ -13,6 +13,8 @@
 #define WIDTH   640
 #define HEIGHT  480
 
+#define TITLE   "game"
+
 ALLEGRO_DISPLAY *g_display = NULL;
 
 static int render_setup() {
@@ -22,6 +24,8 @@ static int render_setup() {
         printf("al_create_display() failed\n");
         return STATUS_FAILURE;
     }
+    // set window title
+    al_set_window_title(g_display, TITLE);
     return STATUS_SUCCESS;
 }
 
