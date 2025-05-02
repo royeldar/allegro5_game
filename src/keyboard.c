@@ -4,6 +4,7 @@
 
 #include <allegro5/allegro.h>
 #include <assert.h>
+#include <string.h>
 
 #include "keyboard.h"
 
@@ -45,4 +46,8 @@ void do_keyboard_tick() {
     int keycode;
     for (keycode = 0; keycode < ALLEGRO_KEY_MAX; keycode++)
         keys[keycode] &= KEY_DOWN;
+}
+
+void clear_keyboard_state() {
+    memset(keys, 0, sizeof(keys));
 }

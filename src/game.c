@@ -2,6 +2,7 @@
  * Main game loop
  */
 
+#define ALLEGRO_UNSTABLE
 #include <allegro5/allegro.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -69,6 +70,8 @@ void game_loop() {
         case ALLEGRO_EVENT_DISPLAY_SWITCH_OUT:
             pause = true;
             al_stop_timer(g_timer);
+            al_clear_keyboard_state(NULL);
+            clear_keyboard_state();
             break;
         case ALLEGRO_EVENT_DISPLAY_SWITCH_IN:
             pause = false;
