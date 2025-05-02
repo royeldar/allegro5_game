@@ -1,4 +1,5 @@
 #include <allegro5/allegro.h>
+#include <allegro5/allegro_image.h>
 #include <stdio.h>
 
 #include "game.h"
@@ -11,6 +12,12 @@ int main(int argc, char **argv) {
     // initialize allegro system
     if (!al_init()) {
         printf("al_init() failed\n");
+        goto cleanup;
+    }
+
+    // initialize the image addon
+    if (!al_init_image_addon()) {
+        printf("al_init_image_addon() failed\n");
         goto cleanup;
     }
 
