@@ -46,6 +46,7 @@ void update_frame(struct shared_state *shared_state) {
 
 void game_loop() {
     bool exit = false;
+    bool pause = false;
     while (!exit) {
         bool update = false;
         ALLEGRO_EVENT event;
@@ -66,8 +67,15 @@ void game_loop() {
             wait_for_acknowledgement();
             al_start_timer(g_timer);
             break;
+        case ALLEGRO_EVENT_DISPLAY_SWITCH_OUT:
+            pause = true;
+            break;
+        case ALLEGRO_EVENT_DISPLAY_SWITCH_IN:
+            pause = false;
+            break;
         case ALLEGRO_EVENT_TIMER:
-            update = true;
+            if (!pause)
+                update = true;
             break;
         }
         if (update) {
