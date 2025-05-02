@@ -59,19 +59,19 @@ void game_loop() {
             send_event(HALT_DRAWING);
             wait_for_acknowledgement();
             al_acknowledge_drawing_halt(g_display);
-            al_stop_timer(g_timer);
             break;
         case ALLEGRO_EVENT_DISPLAY_RESUME_DRAWING:
             al_acknowledge_drawing_resume(g_display);
             send_event(RESUME_DRAWING);
             wait_for_acknowledgement();
-            al_start_timer(g_timer);
             break;
         case ALLEGRO_EVENT_DISPLAY_SWITCH_OUT:
             pause = true;
+            al_stop_timer(g_timer);
             break;
         case ALLEGRO_EVENT_DISPLAY_SWITCH_IN:
             pause = false;
+            al_start_timer(g_timer);
             break;
         case ALLEGRO_EVENT_TIMER:
             if (!pause)
