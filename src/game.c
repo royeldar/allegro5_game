@@ -71,7 +71,7 @@ void game_loop() {
             break;
         case ALLEGRO_EVENT_DISPLAY_SWITCH_IN:
             pause = false;
-            al_start_timer(g_timer);
+            al_resume_timer(g_timer);
             break;
         case ALLEGRO_EVENT_TIMER:
             if (!pause)
