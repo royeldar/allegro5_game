@@ -14,6 +14,12 @@ int main(int argc, char **argv) {
         goto cleanup;
     }
 
+    // install keyboard driver
+    if (!al_install_keyboard()) {
+        printf("al_install_keyboard() failed\n");
+        goto cleanup;
+    }
+
     // setup stuff
     if (!game_setup()) {
         printf("game_setup() failed\n");
@@ -56,6 +62,9 @@ int main(int argc, char **argv) {
     // register timer event source
     al_register_event_source(g_event_queue, al_get_timer_event_source(g_timer));
 
+    // register keyboard event source
+    al_register_event_source(g_event_queue, al_get_keyboard_event_source());
+
     // start timer
     al_start_timer(g_timer);
 
@@ -70,6 +79,9 @@ int main(int argc, char **argv) {
 
     // unregister timer event source
     al_unregister_event_source(g_event_queue, al_get_timer_event_source(g_timer));
+
+    // unregister keyboard event source
+    al_unregister_event_source(g_event_queue, al_get_keyboard_event_source());
 
     // flush event queue
     al_flush_event_queue(g_event_queue);

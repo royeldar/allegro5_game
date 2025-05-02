@@ -7,6 +7,7 @@
 #include <stdio.h>
 
 #include "game.h"
+#include "keyboard.h"
 #include "render.h"
 #include "shared_state.h"
 #include "synchronization.h"
@@ -77,11 +78,16 @@ void game_loop() {
             if (!pause)
                 update = true;
             break;
+        case ALLEGRO_EVENT_KEY_DOWN:
+        case ALLEGRO_EVENT_KEY_UP:
+            handle_keyboard_event(&event.keyboard);
+            break;
         }
         if (update) {
             struct shared_state *shared_state = get_shared_state_for_writing();
             update_frame(shared_state);
             write_shared_state();
+            do_keyboard_tick();
         }
     }
 }
