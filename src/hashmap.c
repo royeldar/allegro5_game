@@ -136,13 +136,17 @@ struct hashmap *hashmap_create(size_t initial_size) {
  * @brief Destroy a hashmap (including its entries)
  *
  * @param map pointer to hashmap
+ * @param callback optional callback which is called for every hashmap entry
+ * @param extra extra parameter that is given to the callback
  */
-void hashmap_destroy(struct hashmap *map) {
+void hashmap_destroy(struct hashmap *map, void (*callback)(struct hashmap_entry *entry, void *extra), void *extra) {
     unsigned int i;
     for (i = 0; i < map->capacity; i++) {
         struct hashmap_entry *e = map->table[i];
         while (e != NULL) {
             struct hashmap_entry *n = e->next;
+            if (callback != NULL)
+                callback(e, extra);
             free(e->str);
             free(e);
             e = n;

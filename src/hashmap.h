@@ -8,7 +8,7 @@ struct hashmap_iter;
 const char *hashmap_entry_get_str(const struct hashmap_entry *entry);
 void **hashmap_entry_get_value_ptr(struct hashmap_entry *entry);
 struct hashmap *hashmap_create(size_t initial_size);
-void hashmap_destroy(struct hashmap *map);
+void hashmap_destroy(struct hashmap *map, void (*callback)(struct hashmap_entry *entry, void *extra), void *extra);
 struct hashmap_entry *hashmap_get(const struct hashmap *map, const char *str);
 struct hashmap_entry *hashmap_get_next(const struct hashmap *map, const struct hashmap_entry *entry);
 bool hashmap_add(struct hashmap *map, const char *str, void *ptr);
