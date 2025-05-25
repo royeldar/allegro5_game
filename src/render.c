@@ -6,6 +6,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 
+#include "gfx.h"
 #include "render.h"
 #include "shared_state.h"
 #include "synchronization.h"
@@ -14,6 +15,8 @@
 #define HEIGHT  480
 
 #define TITLE   "game"
+
+#define GFX_DIR "gfx"
 
 ALLEGRO_DISPLAY *g_display = NULL;
 
@@ -26,6 +29,11 @@ static int render_setup() {
     }
     // set window title
     al_set_window_title(g_display, TITLE);
+    // load bitmaps
+    if (!load_gfx_bitmaps(GFX_DIR)) {
+        printf("load_gfx_bitmaps() failed\n");
+        return STATUS_FAILURE;
+    }
     return STATUS_SUCCESS;
 }
 
@@ -57,7 +65,8 @@ static void render_loop(ALLEGRO_THREAD *thread) {
 }
 
 static void render_cleanup() {
-    // TODO
+    // destroy bitmaps
+    destroy_gfx_bitmaps();
 }
 
 void *render_main(ALLEGRO_THREAD *thread, void *arg) {
