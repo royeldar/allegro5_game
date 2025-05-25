@@ -4,6 +4,7 @@ sources = files(
   'hashmap.c',
   'keyboard.c',
   'render.c',
+  'resources.c',
   'shared_state.c',
   'synchronization.c',
   'triple_buffer.c',
