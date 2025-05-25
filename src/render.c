@@ -67,6 +67,7 @@ static void render_loop(ALLEGRO_THREAD *thread) {
 static void render_cleanup() {
     // destroy bitmaps
     destroy_gfx_bitmaps();
+    // al_destroy_display is called in the main thread
 }
 
 void *render_main(ALLEGRO_THREAD *thread, void *arg) {
