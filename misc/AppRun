@@ -7,4 +7,4 @@ this_dir="$(readlink -f "$(dirname "$0")")"
 export PATH="$this_dir"/usr/bin:"$PATH"
 export LD_LIBRARY_PATH="$this_dir"/usr/lib
 
-exec "$this_dir"/usr/bin/game "$@"
+exec "$this_dir"/lib64/ld-linux-x86-64.so.2 "$this_dir"/usr/bin/game "$@"

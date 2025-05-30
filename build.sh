@@ -10,5 +10,7 @@ meson compile -C build
     --desktop-file misc/game.desktop \
     --icon-file misc/game.svg \
     --custom-apprun misc/AppRun
+mkdir AppDir/lib64
+cp /lib64/ld-linux-x86-64.so.2 AppDir/lib64
 ARCH=x86_64 ./appimagetool-x86_64.AppImage AppDir
 mv game-x86_64.AppImage bin/
