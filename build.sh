@@ -9,6 +9,6 @@ meson compile -C build
     --executable build/game \
     --desktop-file misc/game.desktop \
     --icon-file misc/game.svg \
-    --custom-apprun misc/AppRun \
-    --output appimage
+    --custom-apprun misc/AppRun
+ARCH=x86_64 ./appimagetool-x86_64.AppImage AppDir
 mv game-x86_64.AppImage bin/

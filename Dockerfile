@@ -4,7 +4,8 @@ WORKDIR /root
 COPY . ./
 RUN mkdir bin
 ADD https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage linuxdeploy-x86_64.AppImage
-RUN chmod +x linuxdeploy-x86_64.AppImage
+ADD https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage appimagetool-x86_64.AppImage
+RUN chmod +x linuxdeploy-x86_64.AppImage appimagetool-x86_64.AppImage
 
 RUN pacman --noconfirm -Syu
 RUN pacman --noconfirm -S desktop-file-utils squashfs-tools
