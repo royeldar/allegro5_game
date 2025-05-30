@@ -16,6 +16,9 @@ meson compile -C build
     --library /usr/lib/libfreetype.so.6 \
     --library /usr/lib/libfribidi.so.0 \
     --library /usr/lib/libharfbuzz.so.0 \
+    --exclude-library libwayland-* \
+    --exclude-library libgdk-3.so.0 \
+    --exclude-library libgtk-3.so.0 \
     --executable build/game \
     --desktop-file misc/game.desktop \
     --icon-file misc/game.svg \
