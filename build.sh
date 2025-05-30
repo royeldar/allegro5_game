@@ -10,6 +10,7 @@ meson compile -C build
     --library /usr/lib/libm.so.6 \
     --library /usr/lib/libpthread.so.0 \
     --library /usr/lib/librt.so.1 \
+    --library /usr/lib/libstdc++.so.6 \
     --executable build/game \
     --desktop-file misc/game.desktop \
     --icon-file misc/game.svg \
