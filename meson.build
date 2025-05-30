@@ -16,6 +16,10 @@ liballegro5_deps = [
   dependency('allegro_dialog-static-5', static: true),
   dependency('allegro_video-static-5', static: true),
   dependency('allegro_main-static-5', static: true),
+  cc.find_library('dl', static: true),
+  cc.find_library('stdc++', static: true),
+  dependency('xrender', static: true),
+  dependency('xfixes', static: true),
 ]
 
 subdir('src')
