@@ -11,6 +11,7 @@ meson compile -C build
     --library /usr/lib/libpthread.so.0 \
     --library /usr/lib/librt.so.1 \
     --library /usr/lib/libstdc++.so.6 \
+    --library /usr/lib/libz.so.1 \
     --executable build/game \
     --desktop-file misc/game.desktop \
     --icon-file misc/game.svg \
