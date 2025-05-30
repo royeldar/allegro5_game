@@ -1,0 +1,10 @@
+#!/bin/sh
+
+set -e
+
+this_dir="$(readlink -f "$(dirname "$0")")"
+
+export PATH="$this_dir"/usr/bin:"$PATH"
+export LD_LIBRARY_PATH="$this_dir"/usr/lib
+
+exec "$this_dir"/usr/bin/game "$@"
