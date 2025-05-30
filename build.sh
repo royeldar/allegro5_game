@@ -6,6 +6,10 @@ meson build
 meson compile -C build
 ./linuxdeploy-x86_64.AppImage \
     --appdir AppDir \
+    --library /usr/lib/libc.so.6 \
+    --library /usr/lib/libm.so.6 \
+    --library /usr/lib/libpthread.so.0 \
+    --library /usr/lib/librt.so.1 \
     --executable build/game \
     --desktop-file misc/game.desktop \
     --icon-file misc/game.svg \
