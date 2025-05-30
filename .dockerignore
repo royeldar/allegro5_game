@@ -1,0 +1,8 @@
+AppDir
+bin
+build
+Dockerfile
+.dockerignore
+.git
+.gitignore
+.vscode
