@@ -32,6 +32,7 @@ INTERP="/lib64/ld-linux-x86-64.so.2"
 APPIMAGE="game-x86_64.AppImage"
 
 DEPENDENCIES="$(ldd "$EXECUTABLE" | cut -d" "  -f3)"
+DEPENDENCIES="$DEPENDENCIES /usr/lib/libpthread.so.0 /usr/lib/librt.so.1"
 
 EXTRA_LIBS=""
 
