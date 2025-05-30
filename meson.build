@@ -3,19 +3,19 @@ project('game', 'c')
 cc = meson.get_compiler('c')
 
 liballegro5_deps = [
-  dependency('allegro-5'),
-  dependency('allegro_primitives-5'),
-  dependency('allegro_image-5'),
-  dependency('allegro_font-5'),
-  dependency('allegro_audio-5'),
-  dependency('allegro_acodec-5'),
-  dependency('allegro_ttf-5'),
-  dependency('allegro_color-5'),
-  dependency('allegro_memfile-5'),
-  dependency('allegro_physfs-5'),
-  dependency('allegro_dialog-5'),
-  dependency('allegro_video-5'),
-  dependency('allegro_main-5'),
+  dependency('allegro-static-5', static: true),
+  dependency('allegro_primitives-static-5', static: true),
+  dependency('allegro_image-static-5', static: true),
+  dependency('allegro_font-static-5', static: true),
+  dependency('allegro_audio-static-5', static: true),
+  dependency('allegro_acodec-static-5', static: true),
+  dependency('allegro_ttf-static-5', static: true),
+  dependency('allegro_color-static-5', static: true),
+  dependency('allegro_memfile-static-5', static: true),
+  dependency('allegro_physfs-static-5', static: true),
+  dependency('allegro_dialog-static-5', static: true),
+  dependency('allegro_video-static-5', static: true),
+  dependency('allegro_main-static-5', static: true),
 ]
 
 subdir('src')
