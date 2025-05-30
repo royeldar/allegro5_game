@@ -1,30 +1,21 @@
 project('game', 'c')
 
-cmake = import('cmake')
-
-liballegro5_opts = cmake.subproject_options()
-liballegro5_opts.add_cmake_defines({'SHARED': false})
-
-liballegro5_proj = cmake.subproject('liballegro5', options: liballegro5_opts)
+cc = meson.get_compiler('c')
 
 liballegro5_deps = [
-  liballegro5_proj.dependency('allegro'),
-  liballegro5_proj.dependency('allegro_primitives'),
-  liballegro5_proj.dependency('allegro_image'),
-  liballegro5_proj.dependency('allegro_font'),
-  liballegro5_proj.dependency('allegro_audio'),
-  liballegro5_proj.dependency('allegro_acodec'),
-  liballegro5_proj.dependency('allegro_ttf'),
-  liballegro5_proj.dependency('allegro_color'),
-  liballegro5_proj.dependency('allegro_memfile'),
-  liballegro5_proj.dependency('allegro_physfs'),
-  liballegro5_proj.dependency('allegro_dialog'),
-  liballegro5_proj.dependency('allegro_video'),
-  liballegro5_proj.dependency('allegro_main'),
-  dependency('xi', static: true),
-  dependency('alsa', static: true),
-  dependency('libpulse-simple', static: true),
-  dependency('gtk+-3.0', static: true),
+  dependency('allegro-5'),
+  dependency('allegro_primitives-5'),
+  dependency('allegro_image-5'),
+  dependency('allegro_font-5'),
+  dependency('allegro_audio-5'),
+  dependency('allegro_acodec-5'),
+  dependency('allegro_ttf-5'),
+  dependency('allegro_color-5'),
+  dependency('allegro_memfile-5'),
+  dependency('allegro_physfs-5'),
+  dependency('allegro_dialog-5'),
+  dependency('allegro_video-5'),
+  dependency('allegro_main-5'),
 ]
 
 subdir('src')
