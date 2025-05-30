@@ -31,10 +31,16 @@ INTERP="/lib64/ld-linux-x86-64.so.2"
 
 APPIMAGE="game-x86_64.AppImage"
 
+DEPENDENCIES="$(ldd "$EXECUTABLE" | cut -d" "  -f3)"
+
 EXTRA_LIBS=""
 
 for lib in $SHARED_LIBS; do
-    EXTRA_LIBS="$EXTRA_LIBS --library $lib"
+    case "$DEPENDENCIES" in
+    *"$lib"*)
+        EXTRA_LIBS="$EXTRA_LIBS --library $lib"
+        ;;
+    esac
 done
 
 for lib in $EXCLUDE_LIBS; do
