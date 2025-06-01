@@ -53,6 +53,10 @@ elif host_machine.system() == 'windows'
     cc.find_library('ssp', static: true),
     cc.find_library('stdc++', static: true),
     cc.find_library('pthread', static: true),
+    cc.find_library('dsound'),
+    cc.find_library('opengl32'),
+    cc.find_library('shlwapi'),
+    cc.find_library('winmm'),
   ]
   liballegro5_deps = declare_dependency(
     compile_args: ['-DALLEGRO_STATICLINK'],
