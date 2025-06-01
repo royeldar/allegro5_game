@@ -1,7 +1,10 @@
 AppDir
 bin
 build
+build-win32
 Dockerfile
+win32/allegro
+win32/allegro_deps
 .dockerignore
 .git
 .gitignore
