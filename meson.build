@@ -53,6 +53,7 @@ elif host_machine.system() == 'windows'
     compile_args: ['-DALLEGRO_STATICLINK'],
     dependencies: libraries,
     include_directories: include_dirs,
+    link_args: ['-static-libgcc', '-static-libstdc++'],
   )
 endif
 
