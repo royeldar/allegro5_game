@@ -49,6 +49,11 @@ elif host_machine.system() == 'windows'
     cc.find_library('webpdemux', dirs: lib_paths),
     cc.find_library('zlib', dirs: lib_paths),
   ]
+  libraries += [
+    cc.find_library('ssp', static: true),
+    cc.find_library('stdc++', static: true),
+    cc.find_library('pthread', static: true),
+  ]
   liballegro5_deps = declare_dependency(
     compile_args: ['-DALLEGRO_STATICLINK'],
     dependencies: libraries,
