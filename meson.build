@@ -52,7 +52,7 @@ elif host_machine.system() == 'windows'
   libraries += [
     cc.find_library('ssp', static: true),
     cc.find_library('stdc++', static: true),
-    cc.find_library('pthread', static: true),
+    cc.find_library('winpthread', static: true),
     cc.find_library('dsound'),
     cc.find_library('opengl32'),
     cc.find_library('shlwapi'),
