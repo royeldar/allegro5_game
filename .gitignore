@@ -1,7 +1,9 @@
 AppDir
 bin
+bin-win32
 build
 build-win32
+tmp
 win32/allegro
 win32/allegro_deps
 .vscode
