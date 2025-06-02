@@ -1,7 +1,9 @@
 FROM archlinux:latest
 
-RUN pacman --noconfirm -Sy
-RUN pacman --noconfirm -S allegro desktop-file-utils fuse gcc meson pkgconfig squashfs-tools
+RUN pacman --noconfirm -Sy && \
+    pacman --noconfirm -S allegro desktop-file-utils fuse gcc meson pkgconfig squashfs-tools && \
+    pacman --noconfirm -Scc && \
+    rm -rf /var/lib/pacman/sync/*
 
 WORKDIR /root
 COPY . ./
