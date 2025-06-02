@@ -1,4 +1,6 @@
 #include <allegro5/allegro.h>
+#include <allegro5/allegro_acodec.h>
+#include <allegro5/allegro_audio.h>
 #include <allegro5/allegro_image.h>
 #include <stdio.h>
 
@@ -24,6 +26,18 @@ int main(int argc, char **argv) {
     // install keyboard driver
     if (!al_install_keyboard()) {
         printf("al_install_keyboard() failed\n");
+        goto cleanup;
+    }
+
+    // install audio subsystem
+    if (!al_install_audio()) {
+        printf("al_install_audio() failed\n");
+        goto cleanup;
+    }
+
+    // initialize the audio codecs addon
+    if (!al_init_acodec_addon()) {
+        printf("al_init_acodec_addon() failed\n");
         goto cleanup;
     }
 
