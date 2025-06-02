@@ -33,9 +33,10 @@ bool load_gfx_bitmaps(const char *path) {
  * @brief Destroy all bitmaps
  */
 void destroy_gfx_bitmaps() {
-    assert(gfx_bitmaps != NULL);
-    destroy_resources(gfx_bitmaps, destroy_gfx_bitmap);
-    gfx_bitmaps = NULL;
+    if (gfx_bitmaps != NULL) {
+        destroy_resources(gfx_bitmaps, destroy_gfx_bitmap);
+        gfx_bitmaps = NULL;
+    }
 }
 
 /**
