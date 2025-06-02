@@ -1,7 +1,7 @@
 FROM debian:bookworm-slim
 
 RUN apt-get update
-RUN DEBIAN_FRONTEND=noninteractive apt-get -y install mingw-w64 meson unzip zip
+RUN apt-get install -y --no-install-recommends mingw-w64 meson unzip zip
 
 WORKDIR /root
 COPY . ./
