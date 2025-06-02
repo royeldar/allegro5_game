@@ -7,11 +7,12 @@ meson compile -C build-win32
 
 EXECUTABLE="build-win32/game.exe"
 GFX_DIR="misc/gfx"
+SFX_DIR="misc/sfx"
 ZIP="bin-win32/game.zip"
 
 mkdir tmp
 cp "$EXECUTABLE" tmp
-cp -r "$GFX_DIR" tmp
+cp -r "$GFX_DIR" "$SFX_DIR" tmp
 
 cd tmp
 zip -r ../"$ZIP" .

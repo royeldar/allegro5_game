@@ -30,6 +30,7 @@ APPRUN="misc/AppRun"
 INTERP="/lib64/ld-linux-x86-64.so.2"
 
 GFX_DIR="misc/gfx"
+SFX_DIR="misc/sfx"
 
 APPIMAGE="game-x86_64.AppImage"
 
@@ -63,7 +64,7 @@ APPDIR="AppDir"
 mkdir -p "$APPDIR$(dirname "$INTERP")"
 cp "$INTERP" "$APPDIR$INTERP"
 
-cp -r "$GFX_DIR" "$APPDIR"
+cp -r "$GFX_DIR" "$SFX_DIR" "$APPDIR"
 
 ARCH=x86_64 ./appimagetool-x86_64.AppImage "$APPDIR"
 mv "$APPIMAGE" bin/
