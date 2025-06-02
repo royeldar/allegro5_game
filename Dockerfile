@@ -1,6 +1,6 @@
 FROM archlinux:latest
 
-RUN pacman --noconfirm -Syu
+RUN pacman --noconfirm -Sy
 RUN pacman --noconfirm -S allegro desktop-file-utils fuse gcc meson pkgconfig squashfs-tools
 
 WORKDIR /root
