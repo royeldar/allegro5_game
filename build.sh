@@ -65,6 +65,7 @@ mkdir -p "$APPDIR$(dirname "$INTERP")"
 cp "$INTERP" "$APPDIR$INTERP"
 
 cp -r "$GFX_DIR" "$SFX_DIR" "$APPDIR"
+rm -f "$APPDIR"/*/.gitattributes
 
 ARCH=x86_64 ./appimagetool-x86_64.AppImage "$APPDIR"
 mv "$APPIMAGE" bin/

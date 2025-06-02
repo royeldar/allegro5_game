@@ -13,6 +13,7 @@ ZIP="bin-win32/game.zip"
 mkdir tmp
 cp "$EXECUTABLE" tmp
 cp -r "$GFX_DIR" "$SFX_DIR" tmp
+rm tmp/*/.gitattributes
 
 cd tmp
 zip -r ../"$ZIP" .
