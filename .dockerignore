@@ -4,6 +4,7 @@ bin-win32
 build
 build-win32
 Dockerfile
+Dockerfile.win32
 win32/allegro
 win32/allegro_deps
 .dockerignore
