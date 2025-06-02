@@ -6,6 +6,7 @@ sources = files(
   'keyboard.c',
   'render.c',
   'resources.c',
+  'sfx.c',
   'shared_state.c',
   'synchronization.c',
   'triple_buffer.c',

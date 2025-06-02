@@ -10,10 +10,13 @@
 #include "game.h"
 #include "keyboard.h"
 #include "render.h"
+#include "sfx.h"
 #include "shared_state.h"
 #include "synchronization.h"
 
 #define FPS 50
+
+#define SFX_DIR "sfx"
 
 static const struct shared_state initial_shared_state = {
     // TODO
@@ -36,6 +39,12 @@ bool game_setup() {
     g_timer = al_create_timer(1.0 / FPS);
     if (g_timer == NULL) {
         printf("al_create_timer() failed\n");
+        return false;
+    }
+
+    // load audio samples
+    if (!load_sfx_samples(SFX_DIR)) {
+        printf("load_sfx_samples() failed\n");
         return false;
     }
 
@@ -96,6 +105,7 @@ void game_loop() {
 }
 
 void game_cleanup() {
+    destroy_sfx_samples();
     if (g_event_queue != NULL)
         al_destroy_event_queue(g_event_queue);
     if (g_timer != NULL)
