@@ -6,4 +6,5 @@ build-win32
 tmp
 win32/allegro
 win32/allegro_deps
+win32/*.zip
 .vscode
