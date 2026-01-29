@@ -94,6 +94,7 @@ executable(
   'game',
   sources: sources,
   dependencies: liballegro5_deps,
+  win_subsystem: 'windows',
   install: true,
 )
 
