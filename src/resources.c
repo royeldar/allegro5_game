@@ -6,6 +6,7 @@
 #include <stdbool.h>
 #include <string.h>
 
+#include "flatpak.h"
 #include "hashmap.h"
 #include "resources.h"
 
@@ -23,16 +24,14 @@ static const char *remove_prefix(const char *str, const char *initial) {
     return str + len;
 }
 
-static const char *filename_extension(const char *filename) {
-    return strrchr(filename, '.');
-}
-
 static int load_resource_callback(ALLEGRO_FS_ENTRY *entry, void *extra) {
     const struct load_resource_callback_param *param = extra;
     ALLEGRO_FS_ENTRY *dir = param->dir;
     struct hashmap *map = param->map;
     void *(*load_resource)(ALLEGRO_FILE *file, const char *ext) = param->load_resource;
     void (*destroy_resource)(void *resource) = param->destroy_resource;
+    int ret = ALLEGRO_FOR_EACH_FS_ENTRY_ERROR;
+    ALLEGRO_PATH *path = NULL;
     if (al_get_fs_entry_mode(entry) & ALLEGRO_FILEMODE_ISFILE) {
         const char *dirname = al_get_fs_entry_name(dir);
         const char *filename = al_get_fs_entry_name(entry);
@@ -42,41 +41,68 @@ static int load_resource_callback(ALLEGRO_FS_ENTRY *entry, void *extra) {
         void *resource;
         name = remove_prefix(filename, dirname);
         if (name == NULL)
-            return ALLEGRO_FOR_EACH_FS_ENTRY_ERROR;
-        ext = filename_extension(filename);
-        if (ext == NULL)
-            return ALLEGRO_FOR_EACH_FS_ENTRY_ERROR;
+            goto cleanup;
+        path = al_create_path(name);
+        if (path == NULL)
+            goto cleanup;
+        if (!al_make_path_canonical(path))
+            goto cleanup;
+        if (al_get_path_num_components(path) > 0 && al_get_path_component(path, 0)[0] == '\0')
+            al_remove_path_component(path, 0);
+        name = al_path_cstr(path, '/');
+        ext = al_get_path_extension(path);
         file = al_fopen(filename, "rb");
         if (file == NULL)
-            return ALLEGRO_FOR_EACH_FS_ENTRY_ERROR;
+            goto cleanup;
         resource = load_resource(file, ext);
         al_fclose(file);
         if (resource == NULL)
-            return ALLEGRO_FOR_EACH_FS_ENTRY_ERROR;
+            goto cleanup;
         if (!hashmap_add(map, name, resource)) {
             destroy_resource(resource);
-            return ALLEGRO_FOR_EACH_FS_ENTRY_ERROR;
+            goto cleanup;
         }
+        al_destroy_path(path);
+        path = NULL;
     }
-    return ALLEGRO_FOR_EACH_FS_ENTRY_OK;
+
+    ret = ALLEGRO_FOR_EACH_FS_ENTRY_OK;
+
+cleanup:
+    if (path != NULL)
+        al_destroy_path(path);
+    return ret;
 }
 
 /**
  * @brief Load resources from a given directory into a hashmap
  *
- * @param path directory
+ * @param subpath relative path to the directory
  * @param load_resource callback which loads a resource from a given file
  * @param destroy_resource callback which destroys a resource
  * @return hashmap containing all resources (or NULL on failure)
  */
-struct hashmap *load_resources(const char *path, void *(*load_resource)(ALLEGRO_FILE *file, const char *ext), void (*destroy_resource)(void *resource)) {
+struct hashmap *load_resources(const char *subpath, void *(*load_resource)(ALLEGRO_FILE *file, const char *ext), void (*destroy_resource)(void *resource)) {
+    ALLEGRO_PATH *path = NULL;
     ALLEGRO_FS_ENTRY *dir = NULL;
     struct hashmap *map = NULL;
     struct hashmap *ret = NULL;
     int res;
     struct load_resource_callback_param param;
 
-    dir = al_create_fs_entry(path);
+    if (g_flatpak_id != NULL) {
+        path = al_create_path("/app/share/");
+        if (path == NULL)
+            goto cleanup;
+        al_append_path_component(path, g_flatpak_id);
+    } else {
+        path = al_get_standard_path(ALLEGRO_RESOURCES_PATH);
+        if (path == NULL)
+            goto cleanup;
+    }
+    al_append_path_component(path, subpath);
+
+    dir = al_create_fs_entry(al_path_cstr(path, ALLEGRO_NATIVE_PATH_SEP));
     if (dir == NULL)
         goto cleanup;
 
@@ -100,6 +126,8 @@ cleanup:
         destroy_resources(map, destroy_resource);
     if (dir != NULL)
         al_destroy_fs_entry(dir);
+    if (path != NULL)
+        al_destroy_path(path);
     return ret;
 }
 

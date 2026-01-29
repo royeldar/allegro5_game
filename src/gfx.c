@@ -19,7 +19,7 @@ static void destroy_gfx_bitmap(void *resource) {
 /**
  * @brief Load all bitmaps from a given directory
  *
- * @param path directory
+ * @param path relative path to the directory
  * @return true if all bitmaps were loaded successfully
  * @return false otherwise
  */

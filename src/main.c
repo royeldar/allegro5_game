@@ -3,13 +3,23 @@
 #include <allegro5/allegro_audio.h>
 #include <allegro5/allegro_image.h>
 #include <stdio.h>
+#include <stdlib.h>
 
+#include "flatpak.h"
 #include "game.h"
 #include "render.h"
 #include "synchronization.h"
 
+#define APP_NAME    "io.github.royeldar.game"
+
 int main(int argc, char **argv) {
     ALLEGRO_THREAD *thread = NULL;
+
+    // retrieve flatpak app id
+    g_flatpak_id = getenv("FLATPAK_ID");
+
+    // set app name
+    al_set_app_name(APP_NAME);
 
     // initialize allegro system
     if (!al_init()) {

@@ -6,46 +6,89 @@ This is a simple game framework built using Allegro5.
 
 ## Building instructions
 
-### Native build (for Linux)
+### Linux
 
-Building on a Linux distribution is pretty easy, simply run
+Building for a Linux distribution is pretty easy; simply run
 
 ```sh
-meson build
+meson setup build src
 meson compile -C build
 ```
 
 However, there might be dependency issues when trying to run the binary on a different pc.
 
-Therefore, one can build an AppImage, by running the `build.sh` script.
-
-Finally, one can also build this AppImage using the supplied docker image.
-
-#### Docker build (for Linux)
-
-Build the docker image and run the container using the following command:
+Therefore, one can build a Flatpak bundle; in order to do that, run
 
 ```sh
-docker run -it --rm -v $(pwd)/bin:/root/bin --device /dev/fuse --cap-add SYS_ADMIN $(docker build -q .)
+./scripts/setup.sh
+./scripts/build.sh
 ```
 
-### Cross build (for Windows)
+This will create an application bundle called `game.flatpak`.
 
-Building on a Linux distribution for Windows is done using MinGW; simply run
+One may also build a Flatpak bundle containing debugging information, by running
 
 ```sh
-meson --cross-file win32/x86_64-w64-mingw32.txt build-win32
-meson compile -C build-win32
+./scripts/debug/build.sh
 ```
 
-One can build a zip archive by running the `build-win32.sh` script.
+This will create a runtime bundle called `game.Debug.flatpak`.
 
-Finally, this can be done using a docker as well.
+### Windows
 
-#### Docker build (for Windows cross-compilation)
-
-Build the docker image and run the container using the following command:
+Building for Windows is done using MinGW, inside a Docker container:
 
 ```sh
-docker run -it --rm -v $(pwd)/bin-win32:/root/bin-win32 $(docker build -f Dockerfile.win32 -q .)
+./scripts/win32/setup.sh
+./scripts/win32/build.sh
+```
+
+This creates a base Docker image called `game-base-win32`, and then a zip archive called `game.zip`.
+
+## Installation instructions
+
+### Linux
+
+Install the Flatpak bundle `game.flatpak` by running
+
+```sh
+./scripts/install.sh
+```
+
+Afterwards, run the app:
+
+```sh
+./scripts/run.sh
+```
+
+Uninstallation can be done by running
+
+```sh
+./scripts/uninstall.sh
+```
+
+### Windows
+
+Simply unzip the archive `game.zip` anywhere, then run `game.exe`.
+
+## Debugging (only for Linux)
+
+Install the Flatpak bundle `game.Debug.flatpak` by running
+
+```sh
+./scripts/debug/install.sh
+```
+
+Enter a shell environment inside the Flatpak runtime:
+
+```sh
+./scripts/debug/run.sh
+```
+
+Then, one may run stuff like `gdb game`, etc.
+
+Uninstallation can be done by running
+
+```sh
+./scripts/debug/uninstall.sh
 ```

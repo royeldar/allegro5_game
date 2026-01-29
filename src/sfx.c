@@ -19,7 +19,7 @@ static void destroy_sfx_sample(void *resource) {
 /**
  * @brief Load all audio samples from a given directory
  *
- * @param path directory
+ * @param path relative path to the directory
  * @return true if all audio samples were loaded successfully
  * @return false otherwise
  */

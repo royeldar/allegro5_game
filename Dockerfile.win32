@@ -1,18 +1,16 @@
-FROM debian:bookworm-slim
+FROM game-base-win32
 
-RUN apt-get update && \
-    apt-get -y upgrade && \
-    apt-get -y install mingw-w64 meson unzip zip && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+WORKDIR /app
 
-WORKDIR /root
-COPY . ./
-RUN mkdir bin-win32
-ADD https://github.com/liballeg/allegro5/releases/download/5.2.10.1/allegro-x86_64-w64-mingw32-gcc-14.2.0-posix-seh-static-5.2.10.0.zip ./win32/allegro.zip
-ADD https://github.com/liballeg/allegro5/releases/download/5.2.10.1/allegro_deps-x86_64-w64-mingw32-gcc-14.2.0-posix-seh-1.15.0.zip ./win32/allegro_deps.zip
+COPY src src/
+COPY win32 win32/
 
-RUN unzip win32/allegro.zip -d win32
-RUN unzip win32/allegro_deps.zip -d win32
+ADD https://github.com/liballeg/allegro5/releases/download/5.2.11.2/allegro-x86_64-w64-mingw32-gcc-15.2.0-posix-seh-static-5.2.11.2.zip allegro.zip
+ADD https://github.com/liballeg/allegro5/releases/download/5.2.11.2/allegro_deps-x86_64-w64-mingw32-gcc-15.2.0-posix-seh-1.16.0.zip allegro_deps.zip
 
-ENTRYPOINT ["./build-win32.sh"]
+RUN unzip allegro.zip -d src
+RUN unzip allegro_deps.zip -d src
+
+RUN ./win32/build.sh
+
+RUN cd install/bin && zip -r ../../game.zip .
