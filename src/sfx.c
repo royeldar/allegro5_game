@@ -1,3 +1,7 @@
+/*
+ * Audio assets loading routines
+ */
+
 #include <allegro5/allegro_audio.h>
 #include <assert.h>
 #include <stdbool.h>

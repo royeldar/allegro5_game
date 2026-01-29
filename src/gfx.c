@@ -1,3 +1,7 @@
+/*
+ * Graphics assets loading routines
+ */
+
 #include <allegro5/allegro.h>
 #include <assert.h>
 #include <stdbool.h>
