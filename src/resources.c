@@ -84,6 +84,7 @@ cleanup:
  */
 struct hashmap *load_resources(const char *subpath, void *(*load_resource)(ALLEGRO_FILE *file, const char *ext), void (*destroy_resource)(void *resource)) {
     ALLEGRO_PATH *path = NULL;
+    ALLEGRO_PATH *path2 = NULL;
     ALLEGRO_FS_ENTRY *dir = NULL;
     struct hashmap *map = NULL;
     struct hashmap *ret = NULL;
@@ -100,7 +101,11 @@ struct hashmap *load_resources(const char *subpath, void *(*load_resource)(ALLEG
         if (path == NULL)
             goto cleanup;
     }
-    al_append_path_component(path, subpath);
+    path2 = al_create_path_for_directory(subpath);
+    if (path2 == NULL)
+        goto cleanup;
+    if (!al_join_paths(path, path2))
+        goto cleanup;
 
     dir = al_create_fs_entry(al_path_cstr(path, ALLEGRO_NATIVE_PATH_SEP));
     if (dir == NULL)
@@ -126,6 +131,8 @@ cleanup:
         destroy_resources(map, destroy_resource);
     if (dir != NULL)
         al_destroy_fs_entry(dir);
+    if (path2 != NULL)
+        al_destroy_path(path2);
     if (path != NULL)
         al_destroy_path(path);
     return ret;
