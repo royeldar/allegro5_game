@@ -7,6 +7,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 
+#include "config.h"
 #include "game.h"
 #include "keyboard.h"
 #include "render.h"
@@ -17,6 +18,8 @@
 #define FPS 50
 
 #define SFX_DIR "sfx"
+
+#define CONFIG_FILE "config.ini"
 
 static const struct shared_state initial_shared_state = {
     // TODO
@@ -45,6 +48,12 @@ bool game_setup() {
     // load audio samples
     if (!load_sfx_samples(SFX_DIR)) {
         printf("load_sfx_samples() failed\n");
+        return false;
+    }
+
+    // load configuration
+    if (!load_config(CONFIG_FILE)) {
+        printf("load_config() failed\n");
         return false;
     }
 
@@ -105,6 +114,9 @@ void game_loop() {
 }
 
 void game_cleanup() {
+    if (g_config != NULL)
+        save_config(CONFIG_FILE);
+    destroy_config();
     destroy_sfx_samples();
     if (g_event_queue != NULL)
         al_destroy_event_queue(g_event_queue);
