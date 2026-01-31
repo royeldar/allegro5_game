@@ -118,8 +118,8 @@ void game_cleanup() {
         save_config(CONFIG_FILE);
     destroy_config();
     destroy_sfx_samples();
-    if (g_event_queue != NULL)
-        al_destroy_event_queue(g_event_queue);
     if (g_timer != NULL)
         al_destroy_timer(g_timer);
+    if (g_event_queue != NULL)
+        al_destroy_event_queue(g_event_queue);
 }
