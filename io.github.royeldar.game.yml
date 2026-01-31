@@ -6,6 +6,7 @@ command: game
 
 finish-args:
   - --device=dri
+  - --share=ipc
   - --socket=pulseaudio
   - --socket=x11
 
