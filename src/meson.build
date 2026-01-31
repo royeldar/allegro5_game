@@ -85,7 +85,6 @@ sources = files(
   'triple_buffer.c',
 )
 
-
 if host_machine.system() == 'linux'
   assets_dir = get_option('datadir') / app_id
 else
