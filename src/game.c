@@ -8,6 +8,7 @@
 #include <stdio.h>
 
 #include "config.h"
+#include "events.h"
 #include "game.h"
 #include "keyboard.h"
 #include "render.h"
@@ -25,7 +26,6 @@ static const struct shared_state initial_shared_state = {
     // TODO
 };
 
-ALLEGRO_EVENT_QUEUE *g_event_queue = NULL;
 ALLEGRO_TIMER *g_timer = NULL;
 
 bool game_setup() {
@@ -78,10 +78,8 @@ void game_loop() {
         case ALLEGRO_EVENT_DISPLAY_HALT_DRAWING:
             send_event(HALT_DRAWING);
             wait_for_acknowledgement();
-            al_acknowledge_drawing_halt(g_display);
             break;
         case ALLEGRO_EVENT_DISPLAY_RESUME_DRAWING:
-            al_acknowledge_drawing_resume(g_display);
             send_event(RESUME_DRAWING);
             wait_for_acknowledgement();
             break;

@@ -6,6 +6,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 
+#include "events.h"
 #include "gfx.h"
 #include "render.h"
 #include "shared_state.h"
@@ -18,17 +19,19 @@
 
 #define GFX_DIR "gfx"
 
-ALLEGRO_DISPLAY *g_display = NULL;
+static ALLEGRO_DISPLAY *display = NULL;
 
 static int render_setup() {
     // create a 640x480 display
-    g_display = al_create_display(WIDTH, HEIGHT);
-    if (g_display == NULL) {
+    display = al_create_display(WIDTH, HEIGHT);
+    if (display == NULL) {
         printf("al_create_display() failed\n");
         return STATUS_FAILURE;
     }
+    // register display event source
+    al_register_event_source(g_event_queue, al_get_display_event_source(display));
     // set window title
-    al_set_window_title(g_display, TITLE);
+    al_set_window_title(display, TITLE);
     // load bitmaps
     if (!load_gfx_bitmaps(GFX_DIR)) {
         printf("load_gfx_bitmaps() failed\n");
@@ -54,8 +57,10 @@ static void render_loop(ALLEGRO_THREAD *thread) {
             switch (event) {
             case HALT_DRAWING:
                 dont_draw = true;
+                al_acknowledge_drawing_halt(display);
                 break;
             case RESUME_DRAWING:
+                al_acknowledge_drawing_resume(display);
                 dont_draw = false;
                 break;
             }
@@ -67,7 +72,12 @@ static void render_loop(ALLEGRO_THREAD *thread) {
 static void render_cleanup() {
     // destroy bitmaps
     destroy_gfx_bitmaps();
-    // al_destroy_display is called in the main thread
+    if (display != NULL) {
+        // unregister display event source
+        al_unregister_event_source(g_event_queue, al_get_display_event_source(display));
+        // destroy display
+        al_destroy_display(display);
+    }
 }
 
 void *render_main(ALLEGRO_THREAD *thread, void *arg) {

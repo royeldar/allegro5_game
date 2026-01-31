@@ -71,6 +71,7 @@ endif
 sources = files(
   'main.c',
   'config.c',
+  'events.c',
   'flatpak.c',
   'game.c',
   'gfx.c',

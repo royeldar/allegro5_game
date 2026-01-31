@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "events.h"
 #include "flatpak.h"
 #include "game.h"
 #include "render.h"
@@ -79,6 +80,7 @@ int main(int argc, char **argv) {
     }
 
     // start the new thread
+    // note that this creates a display and registers its event source
     al_start_thread(thread);
 
     // wait for setup to finish
@@ -86,9 +88,6 @@ int main(int argc, char **argv) {
         printf("render_setup() failed\n");
         goto cleanup;
     }
-
-    // register display event source
-    al_register_event_source(g_event_queue, al_get_display_event_source(g_display));
 
     // register timer event source
     al_register_event_source(g_event_queue, al_get_timer_event_source(g_timer));
@@ -105,25 +104,24 @@ int main(int argc, char **argv) {
     // stop timer
     al_stop_timer(g_timer);
 
-    // unregister display event source
-    al_unregister_event_source(g_event_queue, al_get_display_event_source(g_display));
-
     // unregister timer event source
     al_unregister_event_source(g_event_queue, al_get_timer_event_source(g_timer));
 
     // unregister keyboard event source
     al_unregister_event_source(g_event_queue, al_get_keyboard_event_source());
 
+    // pause event queue
+    al_pause_event_queue(g_event_queue, true);
+
     // flush event queue
     al_flush_event_queue(g_event_queue);
 
 cleanup:
-    if (thread != NULL)
+    if (thread != NULL) {
         // al_destroy_thread also calls al_join_thread
+        // note that this destroys the display and unregisters its event source
         al_destroy_thread(thread);
-    if (g_display != NULL)
-        // al_create_display is called in the rendering thread
-        al_destroy_display(g_display);
+    }
     if (g_mutex != NULL)
         al_destroy_mutex(g_mutex);
     if (g_cond != NULL)
