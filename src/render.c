@@ -23,6 +23,7 @@ static ALLEGRO_DISPLAY *display = NULL;
 
 static int render_setup() {
     // create a 640x480 display
+    al_set_new_display_flags(ALLEGRO_WINDOWED);
     display = al_create_display(WIDTH, HEIGHT);
     if (display == NULL) {
         printf("al_create_display() failed\n");
