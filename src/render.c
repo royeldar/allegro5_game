@@ -3,10 +3,12 @@
  */
 
 #include <allegro5/allegro.h>
+#include <math.h>
 #include <stdbool.h>
 #include <stdio.h>
 
 #include "events.h"
+#include "fullscreen.h"
 #include "gfx.h"
 #include "render.h"
 #include "shared_state.h"
@@ -19,11 +21,20 @@
 
 #define GFX_DIR "gfx"
 
+static ALLEGRO_BITMAP *bitmap = NULL;
 static ALLEGRO_DISPLAY *display = NULL;
+static bool fullscreen = false;
 
 static int render_setup() {
+    // create a 640x480 bitmap
+    bitmap = al_create_bitmap(WIDTH, HEIGHT);
+    if (bitmap == NULL) {
+        printf("al_create_bitmap() failed\n");
+        return STATUS_FAILURE;
+    }
     // create a 640x480 display
-    al_set_new_display_flags(ALLEGRO_WINDOWED);
+    fullscreen = g_fullscreen;
+    al_set_new_display_flags(fullscreen ? ALLEGRO_FULLSCREEN_WINDOW : ALLEGRO_WINDOWED);
     display = al_create_display(WIDTH, HEIGHT);
     if (display == NULL) {
         printf("al_create_display() failed\n");
@@ -47,7 +58,19 @@ static void draw_frame(const struct shared_state *shared_state) {
 }
 
 static void render_frame(const struct shared_state *shared_state) {
+    float width = al_get_display_width(display);
+    float height = al_get_display_height(display);
+    float scale = fminf(width / WIDTH, height / HEIGHT);
+    al_set_target_bitmap(bitmap);
     draw_frame(shared_state);
+    al_set_target_backbuffer(display);
+    al_clear_to_color(al_map_rgb(0, 0, 0));
+    al_draw_scaled_bitmap(bitmap,
+        0, 0,
+        WIDTH, HEIGHT,
+        (width - WIDTH * scale) / 2, (height - HEIGHT * scale) / 2,
+        WIDTH * scale, HEIGHT * scale,
+        0);
     al_flip_display();
 }
 
@@ -59,6 +82,10 @@ static void render_loop(ALLEGRO_THREAD *thread) {
             const struct shared_state *shared_state;
             read_shared_state();
             shared_state = get_shared_state_for_reading();
+            if (shared_state->fullscreen != fullscreen) {
+                fullscreen = shared_state->fullscreen;
+                al_set_display_flag(display, ALLEGRO_FULLSCREEN_WINDOW, fullscreen);
+            }
             render_frame(shared_state);
         } else {
             switch (event) {
@@ -84,6 +111,10 @@ static void render_cleanup() {
         al_unregister_event_source(g_event_queue, al_get_display_event_source(display));
         // destroy display
         al_destroy_display(display);
+    }
+    if (bitmap != NULL) {
+        // destroy bitmap
+        al_destroy_bitmap(bitmap);
     }
 }
 

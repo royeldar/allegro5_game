@@ -19,6 +19,7 @@ if host_machine.system() == 'linux'
     dependency('allegro_dialog-5'),
     dependency('allegro_video-5'),
     dependency('allegro_main-5'),
+    cc.find_library('m'),
   ]
 elif host_machine.system() == 'windows'
   lib_paths = [
@@ -73,6 +74,7 @@ sources = files(
   'config.c',
   'events.c',
   'flatpak.c',
+  'fullscreen.c',
   'game.c',
   'gfx.c',
   'hashmap.c',

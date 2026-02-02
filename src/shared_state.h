@@ -1,5 +1,7 @@
+#include <stdbool.h>
+
 struct shared_state {
-    // TODO
+    bool fullscreen;
 };
 
 void initialize_shared_state(const struct shared_state *shared_state);

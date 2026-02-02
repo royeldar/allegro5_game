@@ -9,6 +9,7 @@
 
 #include "config.h"
 #include "events.h"
+#include "fullscreen.h"
 #include "game.h"
 #include "keyboard.h"
 #include "render.h"
@@ -24,8 +25,8 @@
 
 #define CONFIG_FILE "config.ini"
 
-static const struct shared_state initial_shared_state = {
-    // TODO
+static struct shared_state initial_shared_state = {
+    .fullscreen = false,
 };
 
 ALLEGRO_TIMER *g_timer = NULL;
@@ -66,11 +67,23 @@ bool game_setup() {
         return false;
     }
 
+    // read fullscreen option from configuration
+    if (!read_fullscreen_option()) {
+        printf("read_fullscreen_option() failed\n");
+        return false;
+    }
+
+    // initialize fullscreen variable
+    initial_shared_state.fullscreen = g_fullscreen;
+
+    // initialize shared state used by the rendering thread
+    initialize_shared_state(&initial_shared_state);
+
     return true;
 }
 
 void update_frame(struct shared_state *shared_state) {
-    // TODO
+    shared_state->fullscreen = g_fullscreen;
 }
 
 void game_loop() {
@@ -121,8 +134,12 @@ void game_loop() {
 }
 
 void game_cleanup() {
-    if (g_config != NULL)
+    if (g_config != NULL) {
+        // write fullscreen option to configuration
+        write_fullscreen_option();
+        // save configuration
         save_config(CONFIG_FILE);
+    }
     destroy_config();
     al_stop_samples();
     destroy_sfx_samples();
