@@ -88,6 +88,9 @@ void update_frame(struct shared_state *shared_state) {
     if (is_key_pressed(ALLEGRO_KEY_ESCAPE)) {
         quit = true;
     }
+    if (is_key_down(ALLEGRO_KEY_ALT) && is_key_pressed(ALLEGRO_KEY_ENTER)) {
+        g_fullscreen = !g_fullscreen;
+    }
     shared_state->fullscreen = g_fullscreen;
 }
 
