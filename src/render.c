@@ -42,6 +42,8 @@ static int render_setup() {
 
 void render_frame(const struct shared_state *shared_state) {
     // TODO
+    al_clear_to_color(al_map_rgb(255, 255, 255));
+    al_flip_display();
 }
 
 static void render_loop(ALLEGRO_THREAD *thread) {
