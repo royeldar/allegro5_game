@@ -48,6 +48,7 @@ bool game_setup() {
     }
 
     // reserve audio samples
+    // note that this creates a default mixer and a default voice
     if (!al_reserve_samples(SAMPLES)) {
         printf("al_reserve_samples() failed\n");
         return false;
