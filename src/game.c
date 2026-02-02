@@ -31,6 +31,8 @@ static struct shared_state initial_shared_state = {
 
 ALLEGRO_TIMER *g_timer = NULL;
 
+static bool quit = false;
+
 bool game_setup() {
     initialize_shared_state(&initial_shared_state);
 
@@ -83,19 +85,21 @@ bool game_setup() {
 }
 
 void update_frame(struct shared_state *shared_state) {
+    if (is_key_pressed(ALLEGRO_KEY_ESCAPE)) {
+        quit = true;
+    }
     shared_state->fullscreen = g_fullscreen;
 }
 
 void game_loop() {
-    bool exit = false;
     bool pause = false;
-    while (!exit) {
+    while (!quit) {
         bool update = false;
         ALLEGRO_EVENT event;
         al_wait_for_event(g_event_queue, &event);
         switch (event.type) {
         case ALLEGRO_EVENT_DISPLAY_CLOSE:
-            exit = true;
+            quit = true;
             break;
         case ALLEGRO_EVENT_DISPLAY_HALT_DRAWING:
             send_event(HALT_DRAWING);
