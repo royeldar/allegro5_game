@@ -41,7 +41,7 @@ static int render_setup() {
     return STATUS_SUCCESS;
 }
 
-void render_frame(const struct shared_state *shared_state) {
+static void render_frame(const struct shared_state *shared_state) {
     // TODO
     al_clear_to_color(al_map_rgb(255, 255, 255));
     al_flip_display();
