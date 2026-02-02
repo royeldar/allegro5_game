@@ -123,6 +123,7 @@ void game_cleanup() {
     if (g_config != NULL)
         save_config(CONFIG_FILE);
     destroy_config();
+    al_stop_samples();
     destroy_sfx_samples();
     if (g_timer != NULL)
         al_destroy_timer(g_timer);
