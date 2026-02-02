@@ -18,6 +18,8 @@
 
 #define FPS 50
 
+#define SAMPLES 16
+
 #define SFX_DIR "sfx"
 
 #define CONFIG_FILE "config.ini"
@@ -42,6 +44,12 @@ bool game_setup() {
     g_timer = al_create_timer(1.0 / FPS);
     if (g_timer == NULL) {
         printf("al_create_timer() failed\n");
+        return false;
+    }
+
+    // reserve audio samples
+    if (!al_reserve_samples(SAMPLES)) {
+        printf("al_reserve_samples() failed\n");
         return false;
     }
 
